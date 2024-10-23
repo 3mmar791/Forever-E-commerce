@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { ShopContext } from "../Context/ShopContext";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../Components/RelatedProducts";
@@ -10,7 +10,7 @@ function Product() {
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
 
-  const fetchProductData = async () => {
+  const fetchProductData = useCallback(async () => {
     products.map((item) => {
       if (item._id === productId) {
         setProductData(item);
@@ -18,12 +18,11 @@ function Product() {
         return null;
       }
     });
-  };
+  }, [products, productId, setProductData, setImage]);
 
   useEffect(() => {
     fetchProductData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productId]);
+  }, [fetchProductData, productId]);
 
   return productData ? (
     <div className="border-t-2 pt-10 opacity-100 transition-opacity duration-500 ease-in">
@@ -38,23 +37,49 @@ function Product() {
                 alt=""
                 onClick={() => setImage(item)}
                 className={`w-[24%] flex-shrink-0 cursor-pointer sm:mb-3 sm:w-full`}
+                loading="lazy"
               />
             ))}
           </div>
 
           <div className="w-full sm:w-[50%] md:pr-6">
-            <img className="h-auto w-full" src={image} alt="" />
+            <img className="h-auto w-full" src={image} alt="" loading="lazy" />
           </div>
 
           {/* Product Details */}
           <div className="flex-1">
             <h1 className="mt-2 text-2xl font-medium">{productData.name}</h1>
             <div className="mt-2 flex items-center gap-1">
-              <img src={assets.star_icon} alt="" className="5 w-3" />
-              <img src={assets.star_icon} alt="" className="5 w-3" />
-              <img src={assets.star_icon} alt="" className="5 w-3" />
-              <img src={assets.star_icon} alt="" className="5 w-3" />
-              <img src={assets.star_dull_icon} alt="" className="5 w-3" />
+              <img
+                src={assets.star_icon}
+                alt=""
+                className="5 w-3"
+                loading="lazy"
+              />
+              <img
+                src={assets.star_icon}
+                alt=""
+                className="5 w-3"
+                loading="lazy"
+              />
+              <img
+                src={assets.star_icon}
+                alt=""
+                className="5 w-3"
+                loading="lazy"
+              />
+              <img
+                src={assets.star_icon}
+                alt=""
+                className="5 w-3"
+                loading="lazy"
+              />
+              <img
+                src={assets.star_dull_icon}
+                alt=""
+                className="5 w-3"
+                loading="lazy"
+              />
               <p className="pl-2">(122)</p>
             </div>
             <p className="mt-5 text-3xl font-medium">

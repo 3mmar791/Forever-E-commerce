@@ -44,6 +44,7 @@ const Cart = () => {
                   src={productData.image[0]}
                   className="w-16 sm:w-20"
                   alt=""
+                  loading="lazy"
                 />
                 <div>
                   <p className="text-sm font-medium sm:text-lg">
@@ -82,6 +83,7 @@ const Cart = () => {
                 src={assets.bin_icon}
                 alt=""
                 onClick={() => updateQuantity(item._id, item.size, 0)}
+                loading="lazy"
               />
             </div>
           );

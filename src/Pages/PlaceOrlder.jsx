@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import CartTotal from "../Components/CartTotal";
 import Tittle from "../Components/Tittle";
@@ -7,9 +7,6 @@ import { ShopContext } from "../Context/ShopContext";
 const Placeholder = () => {
   const [method, setMethod] = useState("cod");
   const { navigate } = useContext(ShopContext);
-  useEffect(() => {
-    console.log(method);
-  }, [method]);
   return (
     <div className="flex min-h-[80vh] flex-col justify-between gap-4 border-t pt-5 sm:flex-row sm:pt-14">
       {/* Left Side */}
@@ -85,7 +82,12 @@ const Placeholder = () => {
               <p
                 className={`h-3.5 min-w-3.5 rounded-full border ${method === "stripe" ? "bg-green-400" : ""}`}
               ></p>
-              <img className="mx-4 h-5" src={assets.stripe_logo} alt="" />
+              <img
+                className="mx-4 h-5"
+                src={assets.stripe_logo}
+                alt=""
+                loading="lazy"
+              />
             </div>
 
             <div
@@ -95,7 +97,12 @@ const Placeholder = () => {
               <p
                 className={`h-3.5 min-w-3.5 rounded-full border ${method === "razorpay" ? "bg-green-400" : ""}`}
               ></p>
-              <img className="mx-4 h-5" src={assets.razorpay_logo} alt="" />
+              <img
+                className="mx-4 h-5"
+                src={assets.razorpay_logo}
+                alt=""
+                loading="lazy"
+              />
             </div>
 
             <div

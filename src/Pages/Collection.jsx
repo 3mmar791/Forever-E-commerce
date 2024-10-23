@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { ShopContext } from "../Context/ShopContext";
 import { assets } from "../assets/assets";
 import Tittle from "../Components/Tittle";
@@ -18,7 +18,6 @@ const Collection = () => {
       setCategory((prev) => [...prev, e.target.value]);
     }
   };
-  4;
 
   const toggleSubCategory = (e) => {
     if (subCategory.includes(e.target.value)) {
@@ -28,8 +27,11 @@ const Collection = () => {
     }
   };
 
-  const applyFilter = () => {
+  // Combine filter and sort logic into one function
+  const applyFilterAndSort = useCallback(() => {
+    // First apply filters
     let productsCopy = products.slice();
+
     if (category.length > 0) {
       productsCopy = productsCopy.filter((item) =>
         category.includes(item.category),
@@ -47,43 +49,26 @@ const Collection = () => {
         item.name.toLowerCase().includes(search.toLowerCase()),
       );
     }
-    setFilterProducts(productsCopy);
-  };
 
-  const sortProducts = () => {
-    let fpCopy = filterProducts.slice();
+    // Then apply sorting
     switch (sortType) {
       case "low-high":
-        setFilterProducts(
-          fpCopy.sort((a, b) => {
-            return a.price - b.price;
-          }),
-        );
+        productsCopy.sort((a, b) => a.price - b.price);
         break;
-
       case "high-low":
-        setFilterProducts(
-          fpCopy.sort((a, b) => {
-            return b.price - a.price;
-          }),
-        );
+        productsCopy.sort((a, b) => b.price - a.price);
         break;
-
       default:
-        applyFilter();
         break;
     }
-  };
 
-  useEffect(() => {
-    applyFilter();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, category, subCategory, showSearch]);
+    setFilterProducts(productsCopy);
+  }, [category, products, search, showSearch, subCategory, sortType]);
 
+  // Single useEffect to handle both filtering and sorting
   useEffect(() => {
-    sortProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortType]);
+    applyFilterAndSort();
+  }, [applyFilterAndSort]);
 
   return (
     <div className="flex flex-col gap-1 border-t pt-10 sm:flex-row sm:gap-10">
@@ -98,6 +83,7 @@ const Collection = () => {
             className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
             src={assets.dropdown_icon}
             alt=""
+            loading="lazy"
           />
         </p>
         {/* Cartegory Filter */}

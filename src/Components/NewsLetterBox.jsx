@@ -1,4 +1,6 @@
-function NewsLetterBox() {
+import { memo } from "react";
+
+const NewsLetterBox = () => {
   const submitHandler = (even) => {
     even.preventDefault();
   };
@@ -30,6 +32,6 @@ function NewsLetterBox() {
       </form>
     </div>
   );
-}
+};
 
-export default NewsLetterBox;
+export default memo(NewsLetterBox);

@@ -27,13 +27,14 @@ function SearchBar() {
           type="text"
           placeholder="Search"
         />
-        <img className="w-4" src={assets.search_icon} alt="" />
+        <img className="w-4" src={assets.search_icon} alt="" loading="lazy" />
       </div>
       <img
         src={assets.cross_icon}
         className="inline w-3 cursor-pointer"
         onClick={() => setShowSearch(false)}
         alt=""
+        loading="lazy"
       />
     </div>
   ) : null;

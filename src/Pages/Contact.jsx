@@ -12,6 +12,7 @@ const Contact = () => {
             className="w-full md:max-w-[480px]"
             src={assets.contact_img}
             alt=""
+            loading="lazy"
           />
           <div className="flex flex-col items-start justify-center gap-6">
             <p className="text-start text-xl font-semibold text-gray-600">

@@ -6,10 +6,10 @@ import ProductItem from "./ProductItem";
 function LatestCollectiom() {
   const { products } = useContext(ShopContext);
   const [latestProduct, setLatestProduct] = useState([]);
+
   useEffect(() => {
     setLatestProduct(products.slice(0, 10));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [products]);
 
   return (
     <div className="my-10">

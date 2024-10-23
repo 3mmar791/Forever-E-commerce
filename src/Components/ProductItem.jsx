@@ -13,6 +13,7 @@ function ProductItem({ id, image, name, price }) {
             src={image[0]}
             className="ease-in-out hover:scale-110 hover:transition"
             alt=""
+            loading="lazy"
           />
         </div>
         <p className="pb-1 pt-3 text-sm">{name}</p>

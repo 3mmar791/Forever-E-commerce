@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { products } from "../assets/assets";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -13,25 +13,28 @@ const ShopContextProvider = (props) => {
   const [cartItems, setcartItems] = useState({});
   const navigate = useNavigate();
 
-  const addToCart = async (itemId, size) => {
-    if (!size) {
-      toast.error("Select Product Size");
-      return;
-    }
-    let cartData = structuredClone(cartItems);
-    if (cartItems[itemId]) {
-      if (cartData[itemId][size]) {
-        cartData[itemId][size] += 1;
-      } else {
-        cartData[itemId][size] = 1;
+  const addToCart = useCallback(
+    async (itemId, size) => {
+      if (!size) {
+        toast.error("Select Product Size");
+        return;
       }
-    } else {
-      cartData[itemId] = { [size]: 1 };
-    }
-    setcartItems(cartData);
-  };
+      let cartData = structuredClone(cartItems);
+      if (cartItems[itemId]) {
+        if (cartData[itemId][size]) {
+          cartData[itemId][size] += 1;
+        } else {
+          cartData[itemId][size] = 1;
+        }
+      } else {
+        cartData[itemId] = { [size]: 1 };
+      }
+      setcartItems(cartData);
+    },
+    [cartItems],
+  );
 
-  const getCartCount = () => {
+  const getCartCount = useCallback(() => {
     let totalCount = 0;
     for (const items in cartItems) {
       for (const item in cartItems[items]) {
@@ -45,15 +48,18 @@ const ShopContextProvider = (props) => {
       }
     }
     return totalCount;
-  };
+  }, [cartItems]);
 
-  const updateQuantity = async (itemId, size, quantity) => {
-    let cartData = structuredClone(cartItems);
-    cartData[itemId][size] = quantity;
-    setcartItems(cartData);
-  };
+  const updateQuantity = useCallback(
+    async (itemId, size, quantity) => {
+      let cartData = structuredClone(cartItems);
+      cartData[itemId][size] = quantity;
+      setcartItems(cartData);
+    },
+    [cartItems],
+  );
 
-  const getCartAmount = () => {
+  const getCartAmount = useCallback(() => {
     let totalAmount = 0;
     for (const items in cartItems) {
       let itemInfo = null;
@@ -74,22 +80,38 @@ const ShopContextProvider = (props) => {
     }
 
     return totalAmount;
-  };
-  const value = {
-    products,
-    currancy,
-    delivery_fee,
-    search,
-    setSearch,
-    showSearch,
-    setShowSearch,
-    cartItems,
-    addToCart,
-    getCartCount,
-    updateQuantity,
-    getCartAmount,
-    navigate,
-  };
+  }, [cartItems]);
+
+  const value = useMemo(
+    () => ({
+      products,
+      currancy,
+      delivery_fee,
+      search,
+      setSearch,
+      showSearch,
+      setShowSearch,
+      cartItems,
+      addToCart,
+      getCartCount,
+      updateQuantity,
+      getCartAmount,
+      navigate,
+    }),
+    [
+      delivery_fee,
+      search,
+      setSearch,
+      showSearch,
+      setShowSearch,
+      cartItems,
+      addToCart,
+      getCartCount,
+      updateQuantity,
+      getCartAmount,
+      navigate,
+    ],
+  );
 
   return (
     // eslint-disable-next-line react/prop-types
